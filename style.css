@@ -18,6 +18,16 @@
   --secondary-hover-color: #444;
 }
 
+.light_mode {
+  /* Light mode colors */
+  --text-color: #222;
+  --subheading-color: #a0a0a0;
+  --placeholder-color: #6c6c6c;
+  --primary-color: #fff;
+  --secondary-color: #e9eef6;
+  --secondary-hover-color: #dbe1ea;
+}
+
 body {
   background: var(--primary-color);
 }
@@ -28,9 +38,22 @@ body {
   color: var(--text-color);
 }
 
+.header,
+.chat-list .message,
+.typing-form {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
 .header {
   margin-top: 7vh;
   padding: 1rem;
+  /* display: none; */
+}
+
+body.hide-header .header {
+  display: none;
+  margin-top: 0;
 }
 
 /* Chọn tất cả phần tử con có class title hoặc subtitle nhưng ko làm tăng độ ưu tiên của CSS*/
@@ -41,6 +64,8 @@ body {
 
 .header .title {
   font-size: 2.7rem;
+  /* Tự động căn chỉnh chiều rộng của phần tử dựa trên nội dung bên trong */
+  width: fit-content;
   background-clip: text;
   background: linear-gradient(to right, #4285f4, #d96570);
   /* Áp dụng gradient đó chỉ trên phần văn bản. */
@@ -54,7 +79,7 @@ body {
   color: var(--subheading-color);
 }
 
-/* Suggestion CSS */
+/* Suggestion-List CSS */
 .suggestion-list {
   margin-top: 9.5vh;
   list-style: none;
@@ -75,6 +100,260 @@ body {
   (0: phần tử sẽ không co lại khi container trở nên nhỏ hơn)
   */
   flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
   border-radius: 0.75rem;
   background: var(--secondary-color);
+}
+
+.suggestion-list .suggestion:hover {
+  background: var(--secondary-hover-color);
+}
+
+.suggestion-list .suggestion .text {
+  font-weight: 400;
+}
+
+.suggestion-list .suggestion .icon {
+  height: 42px;
+  width: 42px;
+  font-size: 1.3rem;
+  margin-top: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--primary-color);
+}
+
+/* Chat-List CSS */
+.chat-list {
+  padding: 2rem 1rem 12rem;
+  max-height: 100vh;
+  overflow-y: auto;
+  scrollbar-color: #999 transparent;
+}
+
+.chat-list .message.incoming {
+  margin-top: 1.5rem;
+}
+
+.chat-list .message .message-content {
+  display: flex;
+  gap: 1.5rem;
+  width: 100%;
+  align-items: center;
+}
+
+.chat-list .message .avatar {
+  width: 40px;
+  height: 40px;
+  /* Hình ảnh được phóng to đủ lớn để lấp đầy khung mà không để lại khoảng trống */
+  object-fit: cover;
+  border-radius: 50%;
+  /* Phần tử được căn chỉnh ở đầu khung theo trục chính flexbox */
+  align-self: flex-start;
+}
+
+.chat-list .message.loading .avatar {
+  animation: rotate 3s linear infinite;
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.chat-list .message .text {
+  color: var(--text-color);
+}
+
+.chat-list .message .text.error {
+  color: #e55865;
+}
+
+.chat-list .message.loading .text {
+  display: none;
+}
+
+.chat-list .message .icon {
+  height: 35px;
+  width: 35px;
+  display: flex;
+  cursor: pointer;
+  font-size: 1.25rem;
+  margin-left: 3.5rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  align-items: center;
+  color: var(--text-color);
+  visibility: hidden;
+}
+
+/* Hover vào content thì mới hiển thị icon */
+.chat-list .message:not(.loading):hover .icon:not(.hide) {
+  visibility: visible;
+}
+
+.chat-list .message .icon:hover {
+  background: var(--secondary-color);
+}
+
+.chat-list .loading-indicator {
+  display: none;
+  width: 100%;
+  gap: 0.8rem;
+  flex-direction: column;
+}
+
+/* Chỉ show loading bars nếu phần tử message chứa class loading */
+.chat-list .message.loading .loading-indicator {
+  display: flex;
+}
+
+.chat-list .loading-indicator .loading-bar {
+  height: 11px;
+  width: 100%;
+  border-radius: 0.2rem;
+  background: linear-gradient(to right, #4285f4, var(--primary-color), #4385f4);
+  animation: animate 3s linear infinite;
+}
+
+.chat-list .loading-indicator .loading-bar:last-child {
+  width: 70%;
+}
+
+@keyframes animate {
+  0% {
+    /* Lúc bắt đầu thì nằm ở vị trí -800px theo trục hoành, trục tung 0 */
+    background-position: -800px 0;
+  }
+
+  100% {
+    /* Kết thúc tại điểm 800px theo trục hoành, trục tung 0 */
+    background-position: 800px 0;
+  }
+}
+
+/* Typing-Area CSS */
+.typing-area {
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  padding: 1rem;
+  background: var(--primary-color);
+}
+
+.typing-area :where(.typing-form, .action-buttons) {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.typing-area .input-wrapper {
+  height: 56px;
+  width: 100%;
+  display: flex;
+  position: relative;
+}
+
+.typing-area .typing-input {
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  color: var(--text-color);
+  border-radius: 6.2rem;
+  padding: 1.1rem 4rem 1.1rem 1.5rem;
+  background: var(--secondary-color);
+}
+
+.typing-area .typing-input:focus {
+  background: var(--secondary-hover-color);
+}
+
+.typing-area .typing-input::placeholder {
+  color: var(--placeholder-color);
+}
+
+.typing-area .icon {
+  height: 56px;
+  width: 56px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--secondary-color);
+}
+
+.typing-area .icon:hover {
+  background: var(--secondary-hover-color) !important;
+}
+
+.typing-area .input-wrapper .icon {
+  position: absolute;
+  right: 0;
+  outline: none;
+  border: none;
+  background: none;
+  color: var(--text-color);
+  /* Kích thước phần tử bằng 0 (ẩn đi) khi chưa nhập input */
+  transform: scale(0);
+  transition: transform 0.2s ease;
+}
+
+/* Khi có giá trị hợp lệ :valid thì sẽ chọn phần tử có class .icon, và icon sẽ được hiển thị*/
+.typing-area .input-wrapper .typing-input:valid ~ .icon {
+  transform: scale(1);
+}
+
+.typing-area .disclaimer-text {
+  font-size: 0.85rem;
+  margin-top: 1rem;
+  text-align: center;
+  color: var(--placeholder-color);
+}
+
+/* Responsive media query code for small screen */
+@media (max-width: 768px) {
+  .header :is(.title, .subtitle) {
+    font-size: 2rem;
+    line-height: 2.6rem;
+  }
+
+  .header .subtitle {
+    font-size: 1.7rem;
+  }
+
+  .chat-list .message .avatar {
+    width: 37px;
+    height: 37px;
+  }
+
+  .typing-area :where(.typing-form, .actions-button) {
+    gap: 0.4rem;
+  }
+
+  .typing-form .input-wrapper {
+    height: 50px;
+  }
+
+  .typing-form .typing-input {
+    padding: 1.1rem 3.5rem 1.1rem 1.2rem;
+  }
+
+  .typing-area .icon {
+    height: 50px;
+    width: 50px;
+  }
+
+  .typing-area .disclaimer-text {
+    font-size: 0.75rem;
+    margin-top: 0.5rem;
+  }
 }

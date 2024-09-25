@@ -1,3 +1,4 @@
+/* Scroll bar */
 const suggestionList = document.querySelector(".suggestion-list");
 
 suggestionList.addEventListener("wheel", function (event) {
