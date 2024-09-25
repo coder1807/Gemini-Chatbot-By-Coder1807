@@ -1,0 +1,80 @@
+/* Importing Google Fonts - Poppins */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+:root {
+  /* Dark mode colors */
+  --text-color: #e3e3e3;
+  --subheading-color: #828282;
+  --placeholder-color: #a6a6a6;
+  --primary-color: #242424;
+  --secondary-color: #383838;
+  --secondary-hover-color: #444;
+}
+
+body {
+  background: var(--primary-color);
+}
+
+/* Header CSS */
+.header,
+.typing-area {
+  color: var(--text-color);
+}
+
+.header {
+  margin-top: 7vh;
+  padding: 1rem;
+}
+
+/* Chọn tất cả phần tử con có class title hoặc subtitle nhưng ko làm tăng độ ưu tiên của CSS*/
+.header :where(.title, .subtitle) {
+  font-weight: 500;
+  line-height: 3.6rem;
+}
+
+.header .title {
+  font-size: 2.7rem;
+  background-clip: text;
+  background: linear-gradient(to right, #4285f4, #d96570);
+  /* Áp dụng gradient đó chỉ trên phần văn bản. */
+  -webkit-background-clip: text;
+  /* Làm cho màu văn bản trở nên trong suốt để gradient phía sau có thể hiển thị. */
+  -webkit-text-fill-color: transparent;
+}
+
+.header .subtitle {
+  font-size: 2.4rem;
+  color: var(--subheading-color);
+}
+
+/* Suggestion CSS */
+.suggestion-list {
+  margin-top: 9.5vh;
+  list-style: none;
+  display: flex;
+  /* Khoảng cách giữa các phần tử 1.25rem = 20px (1rem = 16px) */
+  gap: 1.25rem;
+  /* Nội dung vượt quá kích thước chiều ngang (trục x) thì 1 thanh cuộn ngang sẽ tự động hiện*/
+  overflow-x: scroll;
+  /* Ẩn thanh cuộn */
+  scrollbar-width: none;
+}
+
+.suggestion-list .suggestion {
+  padding: 1.25rem;
+  cursor: pointer;
+  width: 227px;
+  /* Xác định phần tử con trong flex container có được co lại khi container bị thu hẹp không 
+  (0: phần tử sẽ không co lại khi container trở nên nhỏ hơn)
+  */
+  flex-shrink: 0;
+  border-radius: 0.75rem;
+  background: var(--secondary-color);
+}
