@@ -8,8 +8,12 @@ let userMessage = null;
 let isResponseGenerating = false;
 
 // API configuration
-const API_KEY = process.env.API_KEY;
-const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${API_KEY}`;
+// const API_URL = `http://localhost:3000/conv`;
+
+/* Gọi api từ folder backend-api đã được deploy trên vercel làm server.
+   Server api này chứa API-KEY cá nhân nhằm bảo mật dữ liệu và được vercel trả về thông qua biến môi trường (process.env.GERMINI_KEY)
+*/
+const API_URL = "https://backend-chat-ai.vercel.app/conv";
 
 const loadLocalstorageData = () => {
   const savedChats = localStorage.getItem("savedChats");
